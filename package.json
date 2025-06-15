@@ -1,0 +1,37 @@
+{
+  "name": "rolldown_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@chromatic-com/storybook": "^4.0.0",
+    "@storybook/addon-a11y": "9.0.9",
+    "@storybook/addon-docs": "9.0.9",
+    "@storybook/addon-vitest": "9.0.9",
+    "@storybook/web-components-vite": "9.0.9",
+    "@vitest/browser": "^3.2.3",
+    "@vitest/coverage-v8": "^3.2.3",
+    "playwright": "^1.53.0",
+    "rolldown": "1.0.0-beta.15",
+    "storybook": "9.0.9",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.3"
+  },
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "file:C:/Users/bujih/Desktop/code/github/aptos-labs/aptos-ts-sdk",
+    "@aptos-labs/wallet-standard": "^0.5.0",
+    "lit": "^3.3.0",
+    "react": "^19.1.0",
+    "zustand": "^5.0.5"
+  }
+}
