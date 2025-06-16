@@ -8,6 +8,9 @@ class WalletAdapter {
   private store;
   constructor() {
     this.store = Context.getWalletAdaptorStore();
+    Context.subscribeWalletAdaptorStore((state) => {
+      this.store = state;
+    });
   }
 
 //   connect() {
@@ -85,5 +88,6 @@ class WalletAdapter {
 }
 
 const walletAdapter = new WalletAdapter();
+(window as any).AptosWalletConnectKitAdapter = walletAdapter;
 
 export { Modal, Button, Context, WalletInfoModal, walletAdapter };

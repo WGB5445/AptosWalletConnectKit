@@ -24,7 +24,7 @@ export interface DefaultWallet {
   deeplinkProvider?: string;
 }
 
-const default_wallets: DefaultWallet[] = [
+export const default_wallets: DefaultWallet[] = [
   {
     name: 'Nightly',
     url: 'https://nightly.app/',
@@ -351,7 +351,7 @@ export class ConnectWalletModal extends LitElement {
   private _installedWallets: Wallet[] = [];
 
   @state()
-  private _uninstalledWallets: DefaultWallet[] = [];
+  private _uninstalledWallets: DefaultWallet[] = default_wallets;
 
   @state()
   private _needInstallWallet:

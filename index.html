@@ -5,8 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script type="module" src="./src/index.ts"></script>
+     <!-- <script type="module" src="./dist/walletConnectKit.es.js"></script> -->
 </head>
 <body>
     <wallet-connect-button></wallet-connect-button>
+
+    <button id="getAccount">getAccount</button>
+    <button id="signMessage">signMessage</button>
+    <script type="module">
+       console.log('Hello, World!');
+    
+
+        document.getElementById('getAccount').addEventListener('click', async () => {
+            const account = await window.AptosWalletConnectKitAdapter.getAccount();
+            console.log(account);
+        });
+        document.getElementById('signMessage').addEventListener('click', async () => {
+            const message = 'Hello, Aptos!';
+            const signature = await window.AptosWalletConnectKitAdapter.signMessage({
+                message: message,
+                nonce: Math.floor(Date.now() / 1000).toString(),
+            });
+            console.log('Signature:', signature);
+        });
+         
+    </script>
 </body>
 </html>
