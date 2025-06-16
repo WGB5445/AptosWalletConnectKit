@@ -94,6 +94,7 @@ export class WalletConnectButton extends LitElement {
       margin: 0 auto;
       padding: 2rem;
       text-align: center;
+      font-family: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
 
     .logo {

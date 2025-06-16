@@ -151,6 +151,7 @@ export class ConnectWalletModal extends LitElement {
     css`
       :host {
         display: block;
+        font-family: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       }
       .modal-container {
         display: flex;
