@@ -1,72 +1,80 @@
-import { LitElement, html, css } from "lit"
-import { customElement, property, state } from "lit/decorators.js"
-import {ConnectWalletModal, type WalletConnectedEvent} from '../WalletConnectModal'
-import { AptosDisconnectNamespace, getWallets, type AptosDisconnectFeature, type Wallet } from "@aptos-labs/wallet-standard"
-import { getWalletAdaptorStore, setWalletAdaptorStore, subscribeWalletAdaptorStore } from "../Context"
+import { LitElement, html, css } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { ConnectWalletModal, type WalletConnectedEvent } from '../WalletConnectModal';
+import '../WalletInfoModal';
+import {
+  AptosDisconnectNamespace,
+  getWallets,
+  type AptosDisconnectFeature,
+  type Wallet,
+} from '@aptos-labs/wallet-standard';
+import {
+  getWalletAdaptorStore,
+  setWalletAdaptorStore,
+  subscribeWalletAdaptorStore,
+} from '../Context';
 
 @customElement('wallet-connect-button')
 export class WalletConnectButton extends LitElement {
-
   @property({ type: Boolean })
-  showWalletModal = false
+  showWalletModal = false;
 
   @state()
-  private _wallets: readonly Wallet[] = []
+  private _wallets: readonly Wallet[] = [];
 
   @state()
-  private _state = getWalletAdaptorStore()
+  private _state = getWalletAdaptorStore();
 
   connectedCallback(): void {
     super.connectedCallback();
-    const {on, get} = getWallets();
-    on("register", _ => {
+    const { on, get } = getWallets();
+    on('register', () => {
       const wallets = get();
-      this._wallets = wallets.filter(wallet =>
-        wallet.features && Object.keys(wallet.features).some(key => key.startsWith("aptos:"))
+      this._wallets = wallets.filter(
+        (wallet) =>
+          wallet.features && Object.keys(wallet.features).some((key) => key.startsWith('aptos:')),
       );
     });
-    const localStorage_auto_connect = window.localStorage.getItem("AptosWalletAutoConnect")
-    const autoConnect = localStorage_auto_connect === "true" || localStorage_auto_connect === null;
+    const localStorage_auto_connect = window.localStorage.getItem('AptosWalletAutoConnect');
+    const autoConnect = localStorage_auto_connect === 'true' || localStorage_auto_connect === null;
     this._state.setIsAutoConnectEnabled(autoConnect);
 
     subscribeWalletAdaptorStore((state) => {
       this._state = state;
-    })
+    });
   }
-
   render() {
     return html`
       <button @click=${this._onWalletConnectClick} class="wallet-connect-btn">
         ${this._state.address ? this._shortAddress(this._state.address!) : 'Wallet Connect'}
       </button>
-      <connect-wallet-modal .wallets=${this._wallets} @wallet-connected=${this._onWalletConnected} @close=${this._onWalletModalClose}></connect-wallet-modal>
-    `
+      <connect-wallet-modal
+        .wallets=${this._wallets}
+        @wallet-connected=${this._onWalletConnected}
+        @close=${this._onWalletModalClose}
+      ></connect-wallet-modal>
+      <wallet-info-modal
+        .wallet=${this._state.wallet}
+        .address=${this._state.address || ''}
+        .balance=${this._formatBalance()}
+        @disconnect=${this._onDisconnect}
+      >
+      </wallet-info-modal>
+    `;
   }
 
   private async _onWalletConnectClick() {
     if (!this._state.wallet) {
-        const modal = document.querySelector<ConnectWalletModal>('connect-wallet-modal');
-        if (modal) {
-          modal.openModal();
-        }
-    }else {
-      if (!this._state.wallet) {
-        console.warn("No current wallet selected.");
-        this._state.reset();
-        return;
-      }else {
-        const disconnectFeature = (this._state.wallet!.features as AptosDisconnectFeature)[AptosDisconnectNamespace];
-        if (disconnectFeature && disconnectFeature.disconnect) {
-          try {
-            await disconnectFeature.disconnect();
-            this._state.reset();
-          } catch (error) {
-            console.error("Failed to disconnect:", error);
-          }
-        } else {
-          console.warn("Disconnect feature not available for the current wallet.");
-        }
-      }      
+      const modal = document.querySelector<ConnectWalletModal>('connect-wallet-modal');
+      if (modal) {
+        modal.openModal();
+      }
+    } else {
+      // When wallet is connected, show wallet info modal
+      const walletInfoModal = this.shadowRoot?.querySelector('wallet-info-modal');
+      if (walletInfoModal) {
+        walletInfoModal.openModal();
+      }
     }
   }
 
@@ -81,11 +89,37 @@ export class WalletConnectButton extends LitElement {
     this.showWalletModal = false;
   }
 
-  private _onWalletModalClose() {
-  }
+  private _onWalletModalClose() {}
 
   private _shortAddress(addr: string) {
-    return addr.slice(0, 6) + '...' + addr.slice(-4)
+    return addr.slice(0, 6) + '...' + addr.slice(-4);
+  }
+
+  private _formatBalance(): string {
+    // This is a placeholder - in a real app you'd fetch the actual balance
+    return '2.032e-7';
+  }
+
+  private async _onDisconnect() {
+    if (!this._state.wallet) {
+      console.warn('No current wallet selected.');
+      this._state.reset();
+      return;
+    }
+
+    const disconnectFeature = (this._state.wallet!.features as AptosDisconnectFeature)[
+      AptosDisconnectNamespace
+    ];
+    if (disconnectFeature && disconnectFeature.disconnect) {
+      try {
+        await disconnectFeature.disconnect();
+        this._state.reset();
+      } catch (error) {
+        console.error('Failed to disconnect:', error);
+      }
+    } else {
+      console.warn('Disconnect feature not available for the current wallet.');
+    }
   }
 
   static styles = css`
@@ -94,7 +128,20 @@ export class WalletConnectButton extends LitElement {
       margin: 0 auto;
       padding: 2rem;
       text-align: center;
-      font-family: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-family:
+        SFRounded,
+        ui-rounded,
+        'SF Pro Rounded',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol';
     }
 
     .logo {
@@ -159,11 +206,11 @@ export class WalletConnectButton extends LitElement {
         background-color: #f9f9f9;
       }
     }
-  `
+  `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'wallet-connect-button': WalletConnectButton
+    'wallet-connect-button': WalletConnectButton;
   }
 }
