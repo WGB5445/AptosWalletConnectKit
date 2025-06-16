@@ -2,7 +2,7 @@ import * as Modal from './WalletConnectModal';
 import * as Button from './WalletConnectButton';
 import * as Context from './Context';
 import * as WalletInfoModal from './WalletInfoModal';
-import { AptosDisconnectNamespace, AptosGetAccountNamespace, AptosGetNetworkNamespace, AptosSignAndSubmitTransactionNamespace, AptosSignMessageNamespace, AptosSignTransactionNamespace, type AptoGetsAccountOutput, type AptosConnectFeature, type AptosDisconnectFeature, type AptosGetAccountFeature, type AptosGetNetworkFeature, type AptosSignAndSubmitTransactionFeature, type AptosSignAndSubmitTransactionInput, type AptosSignAndSubmitTransactionOutput, type AptosSignMessageFeature, type AptosSignMessageInput, type AptosSignMessageOutput, type AptosSignTransactionFeature, type AptosSignTransactionInputV1_1, type AptosSignTransactionOutput, type AptosSignTransactionOutputV1_1, type NetworkInfo, type UserResponse } from '@aptos-labs/wallet-standard';
+import { AptosDisconnectNamespace, AptosGetAccountNamespace, AptosGetNetworkNamespace, AptosSignAndSubmitTransactionNamespace, AptosSignMessageNamespace, AptosSignTransactionNamespace, type AptoGetsAccountOutput, type AptosDisconnectFeature, type AptosGetAccountFeature, type AptosGetNetworkFeature, type AptosSignAndSubmitTransactionFeature, type AptosSignAndSubmitTransactionInput, type AptosSignAndSubmitTransactionOutput, type AptosSignMessageFeature, type AptosSignMessageInput, type AptosSignMessageOutput, type AptosSignTransactionFeature, type AptosSignTransactionInputV1_1, type AptosSignTransactionOutputV1_1, type NetworkInfo, type UserResponse } from '@aptos-labs/wallet-standard';
 
 class WalletAdapter {
   private store;

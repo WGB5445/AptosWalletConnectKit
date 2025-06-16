@@ -12,7 +12,10 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    // "noEmit": true, // 注释掉 noEmit 以便生成声明文件
+    "declaration": true,
+    "declarationDir": "dist",
+    "emitDeclarationOnly": true,
 
     /* Linting */
     "strict": true,
@@ -22,5 +25,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "test", "tests", "stories"]
 }
