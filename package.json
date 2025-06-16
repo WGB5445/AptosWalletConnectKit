@@ -1,8 +1,14 @@
 {
   "name": "rolldown_test",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A UI component library for WalletConnect integration.",
+  "main": "dist/walletConnectKit.cjs.js",
+  "module": "dist/walletConnectKit.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
@@ -11,9 +17,24 @@
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx,.mjs,.cjs,.vue,.html,.json",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,jsx,mjs,cjs,css,md}\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "walletconnect",
+    "web3",
+    "ui",
+    "components",
+    "lit",
+    "react"
+  ],
+  "author": "WGB5445 919603023@qq.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WGB5445/AptosWalletConnectKit.git"
+  },
+  "homepage": "https://github.com/WGB5445/AptosWalletConnectKit#readme",
+  "bugs": {
+    "url": "https://github.com/WGB5445/AptosWalletConnectKit/issues"
+  },
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.0",
@@ -37,7 +58,6 @@
     "vitest": "^3.2.3"
   },
   "dependencies": {
-    "@aptos-labs/ts-sdk": "file:C:/Users/bujih/Desktop/code/github/aptos-labs/aptos-ts-sdk",
     "@aptos-labs/wallet-standard": "^0.5.0",
     "lit": "^3.3.0",
     "react": "^19.1.0",
