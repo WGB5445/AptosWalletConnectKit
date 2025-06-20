@@ -10,6 +10,7 @@ dist/
 build/
 out/
 coverage/
+dist-demo/
 
 # Environment files
 .env

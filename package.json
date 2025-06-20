@@ -12,8 +12,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "run:demo": "vite --config vite.demo.config.ts",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx,.mjs,.cjs,.vue,.html,.json",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,jsx,mjs,cjs,css,md}\""
   },
@@ -31,7 +31,7 @@
     "type": "git",
     "url": "git+https://github.com/WGB5445/AptosWalletConnectKit.git"
   },
-  "homepage": "https://github.com/WGB5445/AptosWalletConnectKit#readme",
+  "homepage": "https://wgb5445.github.io/AptosWalletConnectKit/",
   "bugs": {
     "url": "https://github.com/WGB5445/AptosWalletConnectKit/issues"
   },
