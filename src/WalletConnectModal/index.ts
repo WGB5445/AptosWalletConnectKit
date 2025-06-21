@@ -347,6 +347,12 @@ export class ConnectWalletModal extends LitElement {
   @property({ type: Array })
   wallets: readonly Wallet[] = [];
 
+  @property({ type: Boolean })
+  autoConnect = false;
+
+  @property({ type: String })
+  autoConnectWalletName = '';
+
   @state()
   private _installedWallets: Wallet[] = [];
 
@@ -377,6 +383,47 @@ export class ConnectWalletModal extends LitElement {
       this._uninstalledWallets = default_wallets.filter(
         (wallet) => !this.wallets.some((installed) => installed.name === wallet.name),
       );
+
+      if (this.autoConnect && this.autoConnectWalletName !== '') {
+        const wallet = this.getWalletByName(this.autoConnectWalletName);
+        if (wallet) {
+          this._selectedWallet = wallet;
+          this._isConnecting = true;
+          this.connectWallet(wallet)
+            .then((userResponse) => {
+              if (userResponse.status === 'Rejected') {
+                console.warn('User rejected the connection request');
+                return;
+              }
+              const userAddress = userResponse.args.address;
+              const userPublicKey = userResponse.args.publicKey;
+              const userAnsName = userResponse.args.ansName;
+
+              this.dispatchEvent(
+                new CustomEvent<WalletConnectedEvent>('wallet-connected', {
+                  detail: {
+                    address: userAddress.toString(),
+                    publicKey: userPublicKey.toString(),
+                    ansName: userAnsName,
+                    wallet,
+                  },
+                  bubbles: true,
+                  composed: true,
+                }),
+              );
+              this.closeModal();
+            })
+            .catch((error) => {
+              console.error('Failed to connect wallet:', error);
+            })
+            .finally(() => {
+              this._isConnecting = false;
+              this._selectedWallet = undefined;
+            });
+        } else {
+          console.warn(`Wallet ${this.autoConnectWalletName} not found`);
+        }
+      }
     }
   }
 
@@ -400,6 +447,18 @@ export class ConnectWalletModal extends LitElement {
     if (this.parentNode !== document.body) {
       document.body.appendChild(this);
     }
+  }
+
+  private connectWallet(wallet: Wallet): Promise<UserResponse<AptosConnectOutput>> {
+    return (wallet.features as AptosConnectFeature)[AptosConnectNamespace].connect();
+  }
+
+  private getWalletByName(name: string): Wallet | undefined {
+    const wallet = this.wallets.find((w) => w.name === name);
+    if (wallet) {
+      return wallet;
+    }
+    return undefined;
   }
 
   private _renderWalletDetail() {
@@ -524,7 +583,7 @@ export class ConnectWalletModal extends LitElement {
       if (wallet) {
         this._isConnecting = true;
         this._selectedWallet = wallet;
-        (wallet.features as AptosConnectFeature)[AptosConnectNamespace].connect()
+        this.connectWallet(wallet)
           .then((userResponse: UserResponse<AptosConnectOutput>) => {
             if (userResponse.status === 'Rejected') {
               console.warn('User rejected the connection request');

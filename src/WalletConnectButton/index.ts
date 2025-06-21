@@ -26,6 +26,12 @@ export class WalletConnectButton extends LitElement {
   @property({ type: Boolean })
   showWalletModal = false;
 
+  @property({ type: Boolean })
+  autoConnect = false;
+
+  @state()
+  autoConnectWalletName: string | undefined = undefined;
+
   @state()
   private _wallets: readonly Wallet[] = [];
 
@@ -44,10 +50,27 @@ export class WalletConnectButton extends LitElement {
     const autoConnect = localStorage_auto_connect === 'true' || localStorage_auto_connect === null;
     this._state.setIsAutoConnectEnabled(autoConnect);
 
+    const localStorage_auto_connect_name = window.localStorage.getItem(
+      'AptosWalletAutoConnectName',
+    );
+    if (localStorage_auto_connect_name) {
+      this.autoConnectWalletName = localStorage_auto_connect_name;
+    } else {
+      this.autoConnectWalletName = undefined;
+    }
+
     subscribeWalletAdaptorStore((state) => {
       this._state = state;
     });
+
+    // Automatically call connect logic if autoConnect is true
+    if (this.autoConnect) {
+      window.localStorage.setItem('AptosWalletAutoConnect', 'true');
+    } else {
+      window.localStorage.setItem('AptosWalletAutoConnect', 'false');
+    }
   }
+
   render() {
     return html`
       <button @click=${this._onWalletConnectClick} class="wallet-connect-btn">
@@ -55,6 +78,8 @@ export class WalletConnectButton extends LitElement {
       </button>
       <connect-wallet-modal
         .wallets=${this._wallets}
+        .autoConnect=${this.autoConnect}
+        .autoConnectWalletName=${this.autoConnectWalletName ?? ''}
         @wallet-connected=${this._onWalletConnected}
         @close=${this._onWalletModalClose}
       ></connect-wallet-modal>
@@ -92,6 +117,10 @@ export class WalletConnectButton extends LitElement {
       wallet: e.detail.wallet,
     }));
     this.showWalletModal = false;
+    if (this.autoConnect) {
+      this.autoConnectWalletName = e.detail.wallet.name;
+      window.localStorage.setItem('AptosWalletAutoConnectName', e.detail.wallet.name);
+    }
   }
 
   private _onWalletModalClose() {}
@@ -118,6 +147,8 @@ export class WalletConnectButton extends LitElement {
     if (disconnectFeature && disconnectFeature.disconnect) {
       try {
         await disconnectFeature.disconnect();
+        this.autoConnectWalletName = undefined;
+        window.localStorage.removeItem('AptosWalletAutoConnectName');
         this._state.reset();
       } catch (error) {
         console.error('Failed to disconnect:', error);

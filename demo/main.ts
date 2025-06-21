@@ -15,7 +15,7 @@ const app = html`
     This is a demo of the Aptos Wallet Connect Kit. It allows you to connect to an Aptos wallet
     using Wallet Connect.
   </p>
-  <wallet-connect-button></wallet-connect-button>
+  <wallet-connect-button autoconnect></wallet-connect-button>
 
   <h1>Aptos Wallet Connect Kit Demo</h1>
   <button id="getAccount">Get Account</button>
@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
       displayOutput(`Account: ${account}`);
     } catch (error) {
       console.error('Failed to get account:', error);
-      displayOutput(`Error: Failed to get account - ${error.message}`);
+      displayOutput(
+        `Error: Failed to get account - ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   });
 
@@ -68,7 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
       displayOutput(`Signature:\n${JSON.stringify(signature, customSignatureStringify, 2)}`);
     } catch (error) {
       console.error('Failed to sign message:', error);
-      displayOutput(`Error: Failed to sign message - ${error.message}`);
+      displayOutput(
+        `Error: Failed to sign message - ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   });
 });
