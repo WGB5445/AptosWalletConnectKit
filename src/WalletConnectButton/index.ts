@@ -19,7 +19,6 @@ export function filter_aptos_wallet(wallets: readonly Wallet[]): readonly Wallet
     (wallet) =>
       wallet.features && Object.keys(wallet.features).some((key) => key.startsWith('aptos:')),
   );
-
 }
 
 @customElement('wallet-connect-button')

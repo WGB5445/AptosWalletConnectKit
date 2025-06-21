@@ -1,7 +1,7 @@
 import { html, render } from 'lit';
 import { walletAdapter } from '../src';
 import '../src';
-import {Hex} from "@aptos-labs/ts-sdk"
+import { Hex } from '@aptos-labs/ts-sdk';
 
 declare global {
   interface Window {
@@ -11,16 +11,16 @@ declare global {
 
 const app = html`
   <h1>Aptos Wallet Connect Kit Demo</h1>
-    <p>
-        This is a demo of the Aptos Wallet Connect Kit. It allows you to connect to
-        an Aptos wallet using Wallet Connect.
-    </p>
+  <p>
+    This is a demo of the Aptos Wallet Connect Kit. It allows you to connect to an Aptos wallet
+    using Wallet Connect.
+  </p>
   <wallet-connect-button></wallet-connect-button>
 
   <h1>Aptos Wallet Connect Kit Demo</h1>
-      <button id="getAccount">Get Account</button>
-      <button id="signMessage">Sign Message</button>
-    <div id="output"></div>
+  <button id="getAccount">Get Account</button>
+  <button id="signMessage">Sign Message</button>
+  <div id="output"></div>
 `;
 console.log('Welcome to Aptos Wallet Connect Kit Demo!');
 

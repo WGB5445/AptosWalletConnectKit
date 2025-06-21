@@ -369,16 +369,16 @@ export class ConnectWalletModal extends LitElement {
   private _isConnecting = false;
 
   updated(changedProperties: Map<string | number | symbol, unknown>) {
-  super.updated(changedProperties);
-  if (changedProperties.has('wallets')) {
-     this._installedWallets = this.wallets.filter((wallet) =>
-      default_wallets.some((w) => w.name === wallet.name),
-    );
-    this._uninstalledWallets = default_wallets.filter(
-      (wallet) => !this.wallets.some((installed) => installed.name === wallet.name),
-    );
+    super.updated(changedProperties);
+    if (changedProperties.has('wallets')) {
+      this._installedWallets = this.wallets.filter((wallet) =>
+        default_wallets.some((w) => w.name === wallet.name),
+      );
+      this._uninstalledWallets = default_wallets.filter(
+        (wallet) => !this.wallets.some((installed) => installed.name === wallet.name),
+      );
+    }
   }
-}
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (
