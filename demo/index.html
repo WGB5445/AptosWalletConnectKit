@@ -4,9 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aptos Wallet Connect Kit Demo</title>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <h1>Aptos Wallet Connect Kit Demo</h1>
+      <button id="getAccount">Get Account</button>
+      <button id="signMessage">Sign Message</button>
+      <div id="output"></div>
+    </div>
+
     <script type="module" src="./main.ts"></script>
+    <script type="module">
+      console.log('Welcome to Aptos Wallet Connect Kit Demo!');
+
+      const getAccountButton = document.getElementById('getAccount');
+      const signMessageButton = document.getElementById('signMessage');
+      const outputDiv = document.getElementById('output');
+
+      const displayOutput = (message) => {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = message;
+        outputDiv.appendChild(paragraph);
+      };
+
+      getAccountButton?.addEventListener('click', async () => {
+        try {
+          const account = await window.AptosWalletConnectKitAdapter.getAccount();
+          console.log('Account:', account);
+          displayOutput(`Account: ${account}`);
+        } catch (error) {
+          console.error('Failed to get account:', error);
+          displayOutput(`Error: Failed to get account - ${error.message}`);
+        }
+      });
+
+      signMessageButton?.addEventListener('click', async () => {
+        try {
+          const message = 'Hello, Aptos!';
+          const nonce = Math.floor(Date.now() / 1000).toString();
+          const signature = await window.AptosWalletConnectKitAdapter.signMessage({
+            message,
+            nonce,
+          });
+          console.log('Signature:', signature);
+          displayOutput(`Signature: ${JSON.stringify(signature, null, 2)}`);
+        } catch (error) {
+          console.error('Failed to sign message:', error);
+          displayOutput(`Error: Failed to sign message - ${error.message}`);
+        }
+      });
+    </script>
   </body>
 </html>

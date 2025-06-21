@@ -1,5 +1,5 @@
 import { html, render } from 'lit';
-import { WalletConnectButton } from '../src/WalletConnectButton';
+import  '../src';
 
 const app = html`
   <h1>Aptos Wallet Connect Kit Demo</h1>

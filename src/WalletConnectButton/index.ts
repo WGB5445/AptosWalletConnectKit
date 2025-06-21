@@ -14,6 +14,14 @@ import {
   subscribeWalletAdaptorStore,
 } from '../Context';
 
+export function filter_aptos_wallet(wallets: readonly Wallet[]): readonly Wallet[] {
+  return wallets.filter(
+    (wallet) =>
+      wallet.features && Object.keys(wallet.features).some((key) => key.startsWith('aptos:')),
+  );
+
+}
+
 @customElement('wallet-connect-button')
 export class WalletConnectButton extends LitElement {
   @property({ type: Boolean })
@@ -28,12 +36,10 @@ export class WalletConnectButton extends LitElement {
   connectedCallback(): void {
     super.connectedCallback();
     const { on, get } = getWallets();
+    this._wallets = filter_aptos_wallet(get());
     on('register', () => {
       const wallets = get();
-      this._wallets = wallets.filter(
-        (wallet) =>
-          wallet.features && Object.keys(wallet.features).some((key) => key.startsWith('aptos:')),
-      );
+      this._wallets = filter_aptos_wallet(wallets);
     });
     const localStorage_auto_connect = window.localStorage.getItem('AptosWalletAutoConnect');
     const autoConnect = localStorage_auto_connect === 'true' || localStorage_auto_connect === null;
