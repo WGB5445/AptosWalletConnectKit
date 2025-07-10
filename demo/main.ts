@@ -1,7 +1,7 @@
 import { html, render } from 'lit';
 import { walletAdapter } from '../src';
 import '../src';
-import { Hex } from '@aptos-labs/ts-sdk';
+import { bytesToHex } from "@noble/hashes/utils";
 
 declare global {
   interface Window {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const customSignatureStringify = (key: string, value: any) => {
         if (key === 'signature') {
-          return `${Hex.fromHexInput(value.data.data).toString()}`;
+          return `0x${bytesToHex(value.data.data)}`;
         }
         return value;
       };
