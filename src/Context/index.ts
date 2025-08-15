@@ -12,6 +12,7 @@ export interface WalletAdaptorState {
   wallet?: Wallet;
   isAutoConnectEnabled?: boolean;
   setWallet: (wallet: Wallet | undefined) => void;
+  setInstalledWallets: (installed_wallets: readonly Wallet[]) => void;
   reset: () => void;
   setWalletAddress: (address: string) => void;
   setWalletPublicKey: (publicKey: string) => void;
@@ -53,7 +54,7 @@ export const walletAdaptorStore = createStore<WalletAdaptorState>()((set) => ({
       }));
     }
   },
-  setInstalledWallets: (installed_wallets: Wallet[]) => {
+  setInstalledWallets: (installed_wallets: readonly Wallet[]) => {
     set((state) => ({
       ...state,
       installed_wallets,

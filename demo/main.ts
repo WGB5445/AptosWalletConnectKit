@@ -16,7 +16,7 @@ const app = html`
     using Wallet Connect.
   </p>
   <wallet-connect-button autoconnect></wallet-connect-button>
-
+  <button id="connectButton">Connect</button>
   <h1>Aptos Wallet Connect Kit Demo</h1>
   <button id="getAccount">Get Account</button>
   <button id="signMessage">Sign Message</button>
@@ -27,6 +27,7 @@ console.log('Welcome to Aptos Wallet Connect Kit Demo!');
 document.addEventListener('DOMContentLoaded', () => {
   const getAccountButton = document.getElementById('getAccount');
   const signMessageButton = document.getElementById('signMessage');
+  const connectButton = document.getElementById('connectButton');
   const outputDiv = document.getElementById('output');
 
   const displayOutput = (message: string) => {
@@ -72,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Failed to sign message:', error);
       displayOutput(
         `Error: Failed to sign message - ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  });
+
+  connectButton?.addEventListener('click', async () => {
+    try {
+      console.log(await window.AptosWalletConnectKitAdapter.connect("Petra"));
+      displayOutput('Connected to Aptos wallet');
+    } catch (error) {
+      console.error('Failed to connect:', error);
+      displayOutput(
+        `Error: Failed to connect - ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   });

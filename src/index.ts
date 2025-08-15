@@ -11,6 +11,7 @@ import {
   AptosSignAndSubmitTransactionNamespace,
   AptosSignMessageNamespace,
   AptosSignTransactionNamespace,
+  getWallets,
   type AptoGetsAccountOutput,
   type AptosConnectFeature,
   type AptosDisconnectFeature,
@@ -28,17 +29,28 @@ import {
   type NetworkInfo,
   type UserResponse,
 } from '@aptos-labs/wallet-standard';
+import { filter_aptos_wallet } from './WalletConnectButton';
 
 class WalletAdapter {
   private store;
   constructor() {
     this.store = Context.getWalletAdaptorStore();
+    console.log('Wallet adapter initialized');
+    const { on, get } = getWallets();
+    const wallets = get();
+    console.log('Registered wallets:', wallets);
+    this.store.setInstalledWallets(filter_aptos_wallet(wallets));
+    on('register', () => {
+      const wallets = get();
+      console.log('Registered wallets:', wallets);
+      this.store.setInstalledWallets(filter_aptos_wallet(wallets));
+    });
     Context.subscribeWalletAdaptorStore((state) => {
       this.store = state;
     });
   }
 
-  connect(walletName?: string): Promise<UserResponse<AccountInfo>> {
+  async connect(walletName?: string): Promise<UserResponse<AccountInfo>> {
     return (this.store.installed_wallets.filter(w => w.name === walletName)[0]?.features as AptosConnectFeature)[AptosConnectNamespace].connect();
   }
 
