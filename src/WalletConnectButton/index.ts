@@ -45,6 +45,10 @@ export class WalletConnectButton extends LitElement {
     on('register', () => {
       const wallets = get();
       this._wallets = filter_aptos_wallet(wallets);
+      setWalletAdaptorStore((state) => ({
+        ...state,
+        installed_wallets: this._wallets,
+      }));
     });
     const localStorage_auto_connect = window.localStorage.getItem('AptosWalletAutoConnect');
     const autoConnect = localStorage_auto_connect === 'true' || localStorage_auto_connect === null;

@@ -2,6 +2,7 @@ import type { Wallet } from '@aptos-labs/wallet-standard';
 import { createStore } from 'zustand/vanilla';
 
 export interface WalletAdaptorState {
+  installed_wallets: readonly Wallet[];
   address?: string;
   publicKey?: string;
   ansName?: string;
@@ -23,6 +24,7 @@ export interface WalletAdaptorState {
 
 export const walletAdaptorStore = createStore<WalletAdaptorState>()((set) => ({
   wallet: undefined,
+  installed_wallets: [],
   address: undefined,
   publicKey: undefined,
   ansName: undefined,
@@ -50,6 +52,12 @@ export const walletAdaptorStore = createStore<WalletAdaptorState>()((set) => ({
         wallet,
       }));
     }
+  },
+  setInstalledWallets: (installed_wallets: Wallet[]) => {
+    set((state) => ({
+      ...state,
+      installed_wallets,
+    }));
   },
   setWalletAddress: (address: string) => {
     set((state) => {

@@ -3,6 +3,8 @@ import * as Button from './WalletConnectButton';
 import * as Context from './Context';
 import * as WalletInfoModal from './WalletInfoModal';
 import {
+  AccountInfo,
+  AptosConnectNamespace,
   AptosDisconnectNamespace,
   AptosGetAccountNamespace,
   AptosGetNetworkNamespace,
@@ -10,6 +12,7 @@ import {
   AptosSignMessageNamespace,
   AptosSignTransactionNamespace,
   type AptoGetsAccountOutput,
+  type AptosConnectFeature,
   type AptosDisconnectFeature,
   type AptosGetAccountFeature,
   type AptosGetNetworkFeature,
@@ -35,9 +38,9 @@ class WalletAdapter {
     });
   }
 
-  //   connect() {
-  //     (this.store.wallet?.features as AptosConnectFeature)[AptosConnectNamespace].connect()
-  //   }
+  connect(walletName?: string): Promise<UserResponse<AccountInfo>> {
+    return (this.store.installed_wallets.filter(w => w.name === walletName)[0]?.features as AptosConnectFeature)[AptosConnectNamespace].connect();
+  }
 
   isConnected() {
     return this.store.wallet !== undefined && this.store.address !== undefined;
